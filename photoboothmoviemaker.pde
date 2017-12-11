@@ -1,7 +1,7 @@
 
 // ffmpeg -r 60 -i frame-%04d.tif -r 60 -threads 4 video.mp4
 
-String basePath = "Openbooths_";
+String basePath = "C:\\Users\\micro\\Dropbox\\Rails Girls London Winter 2017 Photobooth\\Openbooths_";
 String extension = "-X4.jpg";
 
 int startCount = 3;
@@ -35,7 +35,7 @@ void draw() {
   if (frameCount < frameLimit) {
     int frame = frameCount / framePause;
     int white = 0xFF;
-    int alpha = int(float(frameCount - (frame * framePause))* 255/ framePause);
+    int alpha = (frameCount - (frame * framePause * 255)) / framePause;
     
     tint (white, 255 - alpha);
     image(frames[frame], 0, 0, 1024, 682);
