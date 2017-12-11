@@ -22,7 +22,7 @@ void setup() {
     frames[i - startCount] = loadImage(filename);    
   }
 
-  size(2048, 1365);
+  size(1024, 682);
   
   background(0);
   frameRate(60);
@@ -38,11 +38,11 @@ void draw() {
     int alpha = int(float(frameCount - (frame * framePause))* 255/ framePause);
     
     tint (white, 255 - alpha);
-    image(frames[frame], 0, 0);
+    image(frames[frame], 0, 0, 1024, 682);
     
     tint (white, alpha);
     int nextFrame = min (frame+1, frames.length -1);
-    image(frames[nextFrame], 0, 0);
+    image(frames[nextFrame], 0, 0, 1024, 682);
     
     saveFrame("frame-####.tif");
   }
