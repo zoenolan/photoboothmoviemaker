@@ -35,7 +35,7 @@ void draw() {
   if (frameCount < frameLimit) {
     int frame = frameCount / framePause;
     int white = 0xFF;
-    int alpha = (frameCount - (frame * framePause * 255)) / framePause;
+    int alpha = ((frameCount - (frame * framePause)) * 255) / framePause;
     
     tint (white, 255 - alpha);
     image(frames[frame], 0, 0, 1024, 682);
