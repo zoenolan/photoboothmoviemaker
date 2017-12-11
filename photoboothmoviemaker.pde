@@ -1,35 +1,57 @@
-// Run this program only in the Java mode inside the IDE,
-// not on Processing.js (web mode)!!
 
-// To convert images to a movie you can use:
-// ffmpeg -i seq-%04d.tga -r 25 -threads 4 video.mp4
+// ffmpeg -r 60 -i frame-%04d.tif -r 60 -threads 4 video.mp4
 
-int c = 255;
-PImage img;
+String basePath = "Openbooths_";
+String extension = "-X4.jpg";
+
+int startCount = 3;
+int endCount = 179; 
+
+PImage[] frames;
 
 void setup() {
+  int frameCount = calcFrameCount(startCount, endCount);
+  int loopLimit = startCount + frameCount;
+  
+  frames = new PImage[frameCount];
+
+  for (int i = startCount; i < loopLimit; i++) {
+    String frameNumber = nf(i, 4); 
+    String filename = basePath + frameNumber + extension;
+    println(filename);
+    frames[i - startCount] = loadImage(filename);    
+  }
+
   size(2048, 1365);
+  
   background(0);
-  frameRate(24);
-
-  String basePath = "C:\\Users\\micro\\Dropbox\\Rails Girls London Winter 2017 Photobooth\\Openbooths_";
-  String extension = ".jpg";
-  
-  int startCount = 3;
-  int endCount = 179;
-  int imageCount = endCount - startCount;
-  
-  img = loadImage("C:\\Users\\micro\\Dropbox\\Rails Girls London Winter 2017 Photobooth\\Openbooths_0003-X4.jpg");
-  
-  for () {
-    
-  }
+  frameRate(60);
 }
-void draw() {
-  image(img, 0, 0);
-  saveFrame("frame-####.tif");
 
-  if(frameCount > 500) { // 20 seconds * 25 fps = 500
-    noLoop();
+void draw() {
+  int framePause = 5;
+  
+  int frameLimit = framePause * calcFrameCount(startCount, endCount);
+  if (frameCount < frameLimit) {
+    int frame = frameCount / framePause;
+    int white = 0xFF;
+    int alpha = int(float(frameCount - (frame * framePause))* 255/ framePause);
+    
+    tint (white, 255 - alpha);
+    image(frames[frame], 0, 0);
+    
+    tint (white, alpha);
+    int nextFrame = min (frame+1, frames.length -1);
+    image(frames[nextFrame], 0, 0);
+    
+    saveFrame("frame-####.tif");
   }
+  
+  //if(frameCount > imageCount) {
+    //noLoop();
+  //}
+}
+
+int calcFrameCount(int startCount, int endCount) {
+  return (endCount - startCount + 1);  
 }
